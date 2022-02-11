@@ -1,5 +1,6 @@
-import DB from '../../models/';
 import {NextFunction, Request, Response} from 'express';
+import Pharmacy from '../../models/pharmacy.model';
+import {CompareConditions} from '../../utils/filter-helper';
 
 export const findOpeningHandler = async (
   req: Request,
@@ -7,12 +8,10 @@ export const findOpeningHandler = async (
   next: NextFunction,
 ) => {
   try {
-    const Pharmacy = DB.models.Pharmacy;
+    const time = req.query.time as string;
+    const day = req.query.day as unknown as number;
 
-    const time = req.query.time;
-    const day = req.query.day;
-
-    const results = await Pharmacy.findOpeningPharmacy(
+    const results = await Pharmacy.findOpening(
       time, day,
     );
 
@@ -31,16 +30,14 @@ export const findByPriceHandler = async (
   next: NextFunction,
 ) => {
   try {
-    const Mask = DB.models.Mask;
-
-    const condition = req.query.condition;
-    const limit = req.query.limit;
-    const priceRange = [
-      req.query.startPrice,
-      req.query.endPrice,
+    const condition = req.query.condition as CompareConditions;
+    const limit = req.query.limit as unknown as number;
+    const priceRange: [number, number] = [
+      req.query.startPrice as unknown as number,
+      req.query.endPrice as unknown as number,
     ];
 
-    const results = await Mask.findPharmaciesByPrice(
+    const results = await Pharmacy.findByPrice(
       condition, limit, priceRange,
     );
 

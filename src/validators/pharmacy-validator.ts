@@ -1,5 +1,5 @@
 import {query} from 'express-validator';
-import {Days} from '../../models/interfaces/serviceHours-interface';
+import {Days} from '../../models/serviceHour.model';
 import {isTime} from '../../utils/busy';
 
 export default {

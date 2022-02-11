@@ -1,28 +1,28 @@
-import DB from '../../models';
+import User from '../../models/user.model';
+import Pharmacy from '../../models/pharmacy.model';
 import {maskParser} from '../../utils/parser';
+import Order from '../../models/order.model';
 
-interface Order {
+interface OrderData {
   maskName: string
   pharmacyName: string
   transactionDate: string
   transactionAmount: number
 }
 
-interface User {
+interface UserData {
   name: string
   cashBalance: number
-  purchaseHistories: Order[]
+  purchaseHistories: OrderData[]
 }
 
-export default async (json: User[])=>{
+export default async (json: UserData[])=>{
   try {
-    const User = DB.models.User;
-    const Pharmacy = DB.models.Pharmacy;
     const response = json.map(async ({
       name,
       cashBalance,
       purchaseHistories,
-    }: User) => {
+    }: UserData) => {
       const [user] = await User.findOrCreate({
         where: {
           name: name,
@@ -54,18 +54,23 @@ export default async (json: User[])=>{
         }
 
         const detailed = maskParser(maskName);
-        const mask = await Pharmacy.getMask(pharmacy, detailed);
+        const masks = await pharmacy.$get('masks', {
+          where: {
+            ...detailed,
+          },
+        });
+        const mask = masks[0];
 
         if (!mask) {
           throw new Error('Mask not exist!');
         }
 
-        return await user.createOrder({
+        return await Order.create({
           transactionDate: new Date(transactionDate),
           transactionAmount,
-          MaskId: mask.id,
-          PharmacyId: pharmacy.id,
-          UserId: user.id,
+          maskId: mask.id,
+          pharmacyId: pharmacy.id,
+          userId: user.id,
         });
       });
       return Promise.all(bulkOrderCreate);

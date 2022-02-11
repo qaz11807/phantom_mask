@@ -1,7 +1,7 @@
 
 import DB from '../../models';
-import pharmacyExtractor from './pharmacyExtractor';
-import userExtractor from './userExtractor';
+import pharmacyExtractor from './pharmacy.extractor';
+import userExtractor from './user.extractor';
 
 (async ()=>{
   try {
@@ -10,7 +10,6 @@ import userExtractor from './userExtractor';
     const dataType = args[1].trim().toLowerCase();
     const json = (await import(`../../../data/${fileName}`)).default;
     console.log(fileName, dataType);
-    await DB.init();
     await DB.connect();
     console.log(`database success sync !!!`);
 
@@ -21,6 +20,8 @@ import userExtractor from './userExtractor';
     case 'user':
       userExtractor(json);
       break;
+    default:
+      throw new Error('Format error!');
     }
   } catch (err) {
     throw err;

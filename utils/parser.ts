@@ -1,4 +1,4 @@
-import {Days} from '../models/interfaces/serviceHours-interface';
+import {Days} from '../models/serviceHour.model';
 
 export const openingHoursParser = (str: string) => {
   const formatted = str.toLowerCase().split('/');

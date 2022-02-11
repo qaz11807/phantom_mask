@@ -1,5 +1,5 @@
-import DB from '../../models';
 import {NextFunction, Request, Response} from 'express';
+import Order from '../../models/order.model';
 
 export const calcPerformanceHandler = async (
   req: Request,
@@ -7,11 +7,9 @@ export const calcPerformanceHandler = async (
   next: NextFunction,
 ) => {
   try {
-    const Order = DB.models.Order;
-
-    const dateRange = [
-      req.query.startDate,
-      req.query.endDate,
+    const dateRange: [Date, Date] = [
+      req.query.startDate as unknown as Date,
+      req.query.endDate as unknown as Date,
     ];
 
     const results = await Order.calcSalesPerformanceByDate(
@@ -33,10 +31,8 @@ export const makeOrder = async (
   next: NextFunction,
 ) => {
   try {
-    const Order = DB.models.Order;
-
-    const maskId = req.query.maskId;
-    const userId = req.query.userId;
+    const maskId = req.query.maskId as unknown as number;
+    const userId = req.query.userId as unknown as number;
 
     const results = await Order.makeOrder(
       maskId, userId,

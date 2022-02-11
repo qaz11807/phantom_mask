@@ -1,7 +1,7 @@
 {
   "openapi": "3.0.1",
   "info": {
-    "title": "Pharmacy Manager Platform",
+    "title": "IParking API Document",
     "description": "",
     "contact": {
       "email": "qaz11807@gmail.com"
@@ -89,7 +89,7 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "Pharmacy": {
+                      "pharmacy": {
                         "$ref": "#/components/schemas/Pharmacy"
                       },
                       "maskCount": {
@@ -279,7 +279,7 @@
                   "items": {
                     "type": "object",
                     "properties": {
-                      "User": {
+                      "user": {
                         "$ref": "#/components/schemas/User"
                       },
                       "priceAmount": {
@@ -486,13 +486,13 @@
             "format": "date-time",
             "description": "the date of transcation."
           },
-          "Pharmacy": {
+          "pharmacy": {
             "$ref": "#/components/schemas/Pharmacy"
           },
-          "Mask": {
+          "mask": {
             "$ref": "#/components/schemas/Mask"
           },
-          "User": {
+          "user": {
             "$ref": "#/components/schemas/User"
           }
         },

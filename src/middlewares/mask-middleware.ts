@@ -1,5 +1,6 @@
-import DB from '../../models';
 import {NextFunction, Request, Response} from 'express';
+import Pharmacy from '../../models/pharmacy.model';
+import Mask from '../../models/mask.model';
 
 export const findMaskByPharmacyHandler = async (
   req: Request,
@@ -7,19 +8,19 @@ export const findMaskByPharmacyHandler = async (
   next: NextFunction,
 ) => {
   try {
-    const Pharmacy = DB.models.Pharmacy;
-
-    const pharmacyName = req.query.pharmacyName;
-    const sort = [];
+    const pharmacyName = req.query.pharmacyName as string;
+    type SortOrder = 'DESC' | 'ASC';
+    const sort: [string, SortOrder][] = [];
 
     if (req.query.sortByName) {
-      sort.push(['name', req.query.sortByName]);
+      sort.push(['name', req.query.sortByName as SortOrder]);
     }
     if (req.query.sortByPrice) {
-      sort.push(['price', req.query.sortByPrice]);
+      sort.push(['price', req.query.sortByPrice as SortOrder]);
     }
-    const results = await Pharmacy.findMasksByPharmacyName(
-      pharmacyName, sort,
+    const results = await Pharmacy.getMasksByName(
+      pharmacyName,
+      sort,
     );
 
     res.send(results);
@@ -36,10 +37,8 @@ export const searchRelvantMaskHandler = async (
   next: NextFunction,
 ) => {
   try {
-    const Mask = DB.models.Mask;
-
-    const keyWord = req.query.keyword;
-    const colorKeyword = req.query.color;
+    const keyWord = req.query.keyword as string;
+    const colorKeyword = req.query.color as string;
 
     const results = await Mask.serachByKeyword(
       keyWord, colorKeyword,

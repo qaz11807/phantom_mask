@@ -11,7 +11,6 @@ import swaggerDocument from '../openapi.json';
 export const app = express();
 const startServer = async () => {
   try {
-    await DB.init();
     await DB.connect();
     console.log(`database success sync !!!`);
 

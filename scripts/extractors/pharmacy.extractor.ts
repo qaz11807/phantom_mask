@@ -1,29 +1,28 @@
-import DB from '../../models';
+import Mask from '../../models/mask.model';
+import Pharmacy from '../../models/pharmacy.model';
+import ServiceHour from '../../models/serviceHour.model';
 import {maskParser, openingHoursParser} from '../../utils/parser';
 
-interface Mask {
+interface MaskData {
   name: string
   price: number
 }
 
-interface Pharmacy {
+interface PharmacyData {
   name: string
   cashBalance: number
   openingHours: string
-  masks: Mask[]
+  masks: MaskData[]
 }
 
-export default async (json: Pharmacy[])=>{
+export default async (json: PharmacyData[])=>{
   try {
-    const Pharmacy = DB.models.Pharmacy;
-    const Mask = DB.models.Mask;
-    const ServiceHour = DB.models.ServiceHour;
     const response = json.map(async ({
       name,
       cashBalance,
       openingHours,
       masks,
-    }: Pharmacy) => {
+    }: PharmacyData) => {
       const [pharmacy] = await Pharmacy.findOrCreate({
         where: {
           name: name,
@@ -45,12 +44,12 @@ export default async (json: Pharmacy[])=>{
         return Mask.findOrCreate({
           where: {
             ...details,
-            PharmacyId: pharmacy.id,
+            pharmacyId: pharmacy.id,
           },
           defaults: {
             ...details,
             price,
-            PharmacyId: pharmacy.id,
+            pharmacyId: pharmacy.id,
           },
         });
       });
@@ -59,11 +58,11 @@ export default async (json: Pharmacy[])=>{
         return ServiceHour.findOrCreate({
           where: {
             ...dah,
-            PharmacyId: pharmacy.id,
+            pharmacyId: pharmacy.id,
           },
           defaults: {
             ...dah,
-            PharmacyId: pharmacy.id,
+            pharmacyId: pharmacy.id,
           },
         });
       });

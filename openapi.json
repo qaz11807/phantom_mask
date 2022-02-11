@@ -50,7 +50,7 @@
             "required": true,
             "description": "the compare operator.",
             "schema": {
-              "enum": ["ge", "gte", "lt", "lte"]
+              "enum": ["gt", "gte", "lt", "lte"]
             }
           },
           {

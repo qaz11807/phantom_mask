@@ -57,8 +57,9 @@ _pls extract phamacies first!_
 
 ### Dockerized
 
-[-] check my dockerfile [here](#dockerized)
-have writed dockerfile and build to image, but failed to run when connect the database.
+[O] check my dockerfile [here](#dockerized)
+docker build . -t [APP-Name]
+docker run -d --env-file ./[ENV_FILE_PATH] [APP-Name] -d
 
 ### Demo Site Url
 
